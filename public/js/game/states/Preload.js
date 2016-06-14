@@ -26,7 +26,7 @@ ZenvaRunner.Preload.prototype = {
 		this.load.audio('coin', 'assets/audio/coin.wav');
 		this.load.audio('death', 'assets/audio/death.wav');
 
-		this.load.Complete.add(this.onLoadComplete, this);
+		this.load.onLoadComplete.add(this.onLoadComplete, this);
 	},
 	create: function() {
 		this.preloadBar.cropEnabled = false;
