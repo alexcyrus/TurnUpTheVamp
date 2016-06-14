@@ -10,6 +10,15 @@ ZenvaRunner.MainMenu.prototype = {
 
 		this.ground = this.game.add.tileSprite(0, this.game.height - 73, this.game.width, 73, 'ground');
 		this.ground.autoScroll(-400, 0);
+
+		this.player = this.add.sprite(200, this.game.height/2, 'player');
+		this.player.anchor.setTo(0.5);
+		this.player.scale.setTo(0.3);
+
+		this.player.animations.add('fly', [0,1,2,3,2,1]);
+		this.player.animations.play('fly', 8, true);
+
+		this.game.add.tween(this.player).to({y: this.player.y - 16}, 500, Phaser.Easing.Linear.NONE, true, 0, Infinity, true);
 	},
 	update: function() {
 
