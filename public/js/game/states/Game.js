@@ -44,10 +44,22 @@ ZenvaRunner.Game.prototype = {
 		this.enemies = this.game.add.group();
 
 		this.scoreText = this.game.add.bitmapText(10,10, 'minecraftia', 'Score: 0', 24);
+
+		this.jetSound = this.game.add.audio('rocket');
+		this.coinSound = this.game.add.audio('coin');
+		this.deathSound = this.game.add.audio('death');
+		this.gameMusic = this.game.add.audio('gameMusic');
+		this.gameMusic.play('', 0, true);
 	},
 	update: function() {
 		if(this.game.input.activePointer.isDown) {
 			this.player.body.velocity.y -= 25;
+			if(!this.jetSound.isPlaying) {
+				this.jetSound.play('', 0, true, 0.5);
+			}
+			else {
+				this.jetSound.stop();
+			}
 		}
 
 		if(this.player.body.velocity.y < 0 || this.game.input.activePointer.isDown) {
@@ -115,12 +127,25 @@ ZenvaRunner.Game.prototype = {
 	},
 	coinHit: function(player, coin) {
 		this.score++;
+		this.coinSound.play();
 		coin.kill();
-		this.scoreText.text = 'Score: ' + this.score;
+
+		var dummyCoin = new Coin(this.game, coin.x, coin.y);
+		this.game.add.existing(dummyCoin);
+
+		var scoreTween = this.game.add.tween(dummyCoin).to({x: 50, y: 50}, 300, Phaser.Easing.Linear.NONE, true);
+
+		scoreTween.onComplete.add(function() {
+			dummyCoin.destroy();
+			this.scoreText.text = 'Score: ' + this.score;
+		}, this);
 	},
 	enemyHit: function(player, enemy) {
 		player.kill();
 		enemy.kill();
+
+		this.deathSound.play();
+		this.gameMusic.stop();
 
 		this.ground.stopScroll();
 		this.background.stopScroll();
