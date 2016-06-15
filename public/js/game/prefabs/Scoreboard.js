@@ -6,7 +6,7 @@ Scoreboard.prototype = Object.create(Phaser.Group.prototype);
 Scoreboard.prototype.constructor = Scoreboard;
 
 Scoreboard.prototype.show = function(score) {
-	var bmd, background, gameoverText, scoreText, highScoreText, newHighScoreText, starText;
+	var bmd, background, gameoverText, scoreText, highScoreText, newHighScoreText, startText;
 
 	bmd = this.game.add.bitmapData(this.game.width, this.game.height);
 	bmd.ctx.fillStyle = '#000';
@@ -28,8 +28,20 @@ Scoreboard.prototype.show = function(score) {
 	this.y = this.game.height;
 
 	gameoverText = this.game.add.bitmapText(0,100, 'minecraftia', 'You Died.', 36);
-	gameoverText = this.game.width/2 - (gameoverText.textWidth / 2);
-	this.add(starText);
+	gameoverText.x = this.game.width / 2 - (gameoverText.textWidth / 2);
+	this.add(gameoverText);
+
+	scoreText = this.game.add.bitmapText(0,200, 'minecraftia', 'Your Score: ' + score, 24);
+	scoreText.x = this.game.width / 2 - (scoreText.textWidth / 2);
+	this.add(scoreText);
+
+	highScoreText = this.game.add.bitmapText(0,250, 'minecraftia', 'Your High Score: ' + highscore, 24);
+	highScoreText.x = this.game.width / 2 - (highScoreText.textWidth / 2);
+	this.add(highScoreText);
+
+	startText = this.game.add.bitmapText(0,300, 'minecraftia', 'Tap to play again!', 16);
+	startText.x = this.game.width / 2 - (startText.textWidth / 2);
+	this.add(startText);
 
 	if(isNewHighScore) {
 		newHighScoreText = this.game.add.bitmapText(0, 100, 'minecraftia', 'New High Score!', 12);
