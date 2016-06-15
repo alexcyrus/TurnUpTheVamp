@@ -9,10 +9,17 @@ ZenvaRunner.Game = function() {
 	this.enemyTimer = 0;
 
 	this.score = 0;
+	this.previousCoinType = null;
+
+	this.coinSpawnX = null;
+	this.coinSpacingX = 10;
+	this.coinSpacingY = 10;
 };
 
 ZenvaRunner.Game.prototype = {
 	create: function() {
+		this.game.world.bounds = new Phaser.Rectangle(0,0, this.game.width + 300, this.game.height);
+		
 		this.background = this.game.add.tileSprite(0, 0, this.game.width, 512, 'background');
 		this.background.autoScroll(-100, 0);
 
@@ -50,6 +57,8 @@ ZenvaRunner.Game.prototype = {
 		this.deathSound = this.game.add.audio('death');
 		this.gameMusic = this.game.add.audio('gameMusic');
 		this.gameMusic.play('', 0, true);
+
+		this.coinSpawnX = this.game.width + 64;
 	},
 	update: function() {
 		if(this.game.input.activePointer.isDown) {
@@ -76,7 +85,7 @@ ZenvaRunner.Game.prototype = {
 		}
 
 		if(this.coinTimer < this.game.time.now) {
-			this.createCoin();
+			this.generateCoins();
 			this.coinTimer = this.game.time.now + this.coinRate;
 		}
 
@@ -108,6 +117,21 @@ ZenvaRunner.Game.prototype = {
 
 		coin.reset(x, y);
 		coin.revive();
+		return coin;
+	},
+	createCoinGroup: function(columns, rows) {
+		// create 4 coins in a group
+		var coinSpawnY = this.game.rnd.integerInRange(50, this.game.world.height - 192);
+		var coinRowCounter = 0;
+		var coinColumnCounter = 0;
+		var coin;
+		for(var i = 0; i < columns * rows; i++) {
+			coin = this.createCoin(this.spawnX, coinSpawnY);
+			coin.x = coin.x + (coinColumnCounter * coin.width) + (coinColumnCounter * this.coinSpacingX);
+			coin.y = coin.y + (coinRowCounter * coin.height) + (coinRowCounter * this.coinSpacingY);
+			coinColumnCounter++;
+			coinColumnCounter = 0;
+		}
 	},
 	createEnemy: function() {
 		var x = this.game.width;
@@ -161,5 +185,43 @@ ZenvaRunner.Game.prototype = {
 
 		var scoreboard = new Scoreboard(this.game);
 		scoreboard.show(this.score);
+	},
+	generateCoins: function() {
+		if(!this.previousCoinType || this.previousCoinType < 3) {
+			var coinType = this.game.rnd.integer() % 5;
+			switch(coinType) {
+				case 0:
+					// do nothing. No coins generated
+					break;
+				case 1:
+				case 2:
+					// if the cointype is 1 or 2, create a single coin
+					// this.createCoin();
+					this.createCoin();
+				case 3:
+					// create a small group of coins
+					this.createCoinGroup(2, 2);
+					break;
+				case 4:
+					// create a large coin group
+					this.createCoinGroup(6, 2);
+					break;
+				default:
+					// if somehow we error on the cointype, set the previouscointype to zero and do nothing
+					this.previousCoinType = 0;
+					break;
+			}
+			this.previousCoinType = coinType;
+		}
+		else {
+			if(this.previousCoinType === 4) {
+				// the previous coin generated was a large group,
+				// skip the next generation as well
+				this.previousCoinType = 3;
+			}
+			else {
+				this.previousCoinType = 0;
+			}
+		}
 	}
 };
