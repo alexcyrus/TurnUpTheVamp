@@ -7,6 +7,8 @@ ZenvaRunner.Game = function() {
 
 	this.enemyRate = 500;
 	this.enemyTimer = 0;
+
+	this.score = 0;
 };
 
 ZenvaRunner.Game.prototype = {
@@ -40,6 +42,8 @@ ZenvaRunner.Game.prototype = {
 
 		this.coins = this.game.add.group();
 		this.enemies = this.game.add.group();
+
+		this.scoreText = this.game.add.bitmapText(10,10, 'minecraftia', 'Score: 0', 24);
 	},
 	update: function() {
 		if(this.game.input.activePointer.isDown) {
@@ -70,6 +74,8 @@ ZenvaRunner.Game.prototype = {
 		}
 
 		this.game.physics.arcade.collide(this.player, this.ground, this.groundHit, null, this);
+		this.game.physics.arcade.overlap(this.player, this.coins, this.coinHit, null, this);
+		this.game.physics.arcade.overlap(this.player, this.enemies, this.enemyHit, null, this);
 	},
 	shutdown: function() {
 
@@ -102,5 +108,13 @@ ZenvaRunner.Game.prototype = {
 	},
 	groundHit: function(player, ground) {
 		player.body.velocity.y = -200;
+	},
+	coinHit: function(player, coin) {
+		this.score++;
+		coin.kill();
+		this.scoreText.text = 'Score: ' + this.score;
+	},
+	enemyHit: function(player, enemy) {
+		
 	}
 }
