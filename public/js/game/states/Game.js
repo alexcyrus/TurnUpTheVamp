@@ -78,7 +78,11 @@ ZenvaRunner.Game.prototype = {
 		this.game.physics.arcade.overlap(this.player, this.enemies, this.enemyHit, null, this);
 	},
 	shutdown: function() {
-
+		this.coins.destroy();
+		this.enemies.destroy();
+		this.score = 0;
+		this.coinTimer = 0;
+		this.enemyTimer = 0;
 	},
 	createCoin: function() {
 		var x = this.game.width;
