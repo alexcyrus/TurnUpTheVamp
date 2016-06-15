@@ -115,6 +115,13 @@ ZenvaRunner.Game.prototype = {
 		this.scoreText.text = 'Score: ' + this.score;
 	},
 	enemyHit: function(player, enemy) {
-		
+		player.kill();
+		enemy.kill();
+
+		this.ground.stopScroll();
+		this.background.stopScroll();
+		this.foreground.stopScroll();
+
+		this.enemies.setAll('body.velocity.x', 0);
 	}
 }
