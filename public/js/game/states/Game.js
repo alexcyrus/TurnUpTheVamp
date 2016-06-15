@@ -133,6 +133,8 @@ ZenvaRunner.Game.prototype = {
 		var dummyCoin = new Coin(this.game, coin.x, coin.y);
 		this.game.add.existing(dummyCoin);
 
+		dummyCoin.animations.play('spin', 40, true);
+
 		var scoreTween = this.game.add.tween(dummyCoin).to({x: 50, y: 50}, 300, Phaser.Easing.Linear.NONE, true);
 
 		scoreTween.onComplete.add(function() {
