@@ -123,5 +123,12 @@ ZenvaRunner.Game.prototype = {
 		this.foreground.stopScroll();
 
 		this.enemies.setAll('body.velocity.x', 0);
+		this.coins.setAll('body.velocity.x', 0);
+
+		this.enemyTimer = Number.MAX_VALUE;
+		this.coinTimer = Number.MAX_VALUE;
+
+		var scoreboard = new Scoreboard(this.game);
+		scoreboard.show(this.score);
 	}
-}
+};
