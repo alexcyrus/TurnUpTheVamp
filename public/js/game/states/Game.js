@@ -5,8 +5,8 @@ ZenvaRunner.Game = function() {
   this.coinRate = 1000;
   this.coinTimer = 0;
 
-  this.enemyRate = 1500;
-  this.enemyTimer = 1;
+  this.enemyRate = 500;
+  this.enemyTimer = 0;
 
   this.score = 0;
   this.previousCoinType = null;
