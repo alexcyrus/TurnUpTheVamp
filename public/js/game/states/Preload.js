@@ -17,8 +17,8 @@ ZenvaRunner.Preload.prototype = {
 		this.load.image('foreground', 'assets/images/foreground.png');
 
 		this.load.spritesheet('coins', 'assets/images/coins-ps.png', 51, 51, 7);
-		this.load.spritesheet('player', 'assets/images/jetpack-ps.png', 229, 296, 4);
-		this.load.spritesheet('missile', 'assets/images/missiles-ps.png', 361, 218, 4);
+		this.load.spritesheet('player', 'assets/images/player-ps.png', 229, 296, 4);
+		this.load.spritesheet('enemy', 'assets/images/enemy-spritesheet.png', 361, 218, 4);
 
 		this.load.audio('gameMusic', ['assets/audio/Pamgaea.mp3', 'assets/audio/Pamgaea.ogg']);
 		this.load.audio('rocket', 'assets/audio/rocket.wav');

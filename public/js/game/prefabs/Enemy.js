@@ -1,8 +1,8 @@
 var Enemy = function(game, x, y, key, frame) {
-	key = 'missile';
+	key = 'enemy';
 	Phaser.Sprite.call(this, game, x, y, key, frame);
 
-	this.scale.setTo(0.1);
+	this.scale.setTo(0.4);
 	this.anchor.setTo(0.5);
 
 	this.animations.add('fly');
