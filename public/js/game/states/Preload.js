@@ -12,16 +12,16 @@ ZenvaRunner.Preload.prototype = {
 
 		this.load.setPreloadSprite(this.preloadBar);
 
-		// this.load.image('ground', 'assets/images/ground.png');
-		this.load.image('background', 'assets/images/creepy-background/smooth color/background-1.jpg');
-		// this.load.image('foreground', 'assets/images/foreground.png');
+		this.load.image('ground', 'assets/images/ground.png');
+		this.load.image('background', 'assets/images/background.png');
+		this.load.image('foreground', 'assets/images/foreground.png');
 
-		this.load.spritesheet('coins', 'assets/images/new-coins-ps.jpg', 51, 51, 7);
-		this.load.spritesheet('player', 'assets/images/player-ps.png', 229, 296, 4);
-		this.load.spritesheet('enemy', 'assets/images/enemy-spritesheet.png', 361, 218, 4);
+		this.load.spritesheet('coins', 'assets/images/coins-ps.png', 51, 51, 7);
+		this.load.spritesheet('player', 'assets/images/jetpack-ps.png', 229, 296, 4);
+		this.load.spritesheet('enemy', 'assets/images/missiles-ps.png', 361, 218, 4);
 
 		this.load.audio('gameMusic', ['assets/audio/Pamgaea.mp3', 'assets/audio/Pamgaea.ogg']);
-		// this.load.audio('rocket', 'assets/audio/rocket.wav');
+		this.load.audio('rocket', 'assets/audio/rocket.wav');
 		this.load.audio('bounce', 'assets/audio/bounce.wav');
 		this.load.audio('coin', 'assets/audio/coin.wav');
 		this.load.audio('death', 'assets/audio/death.wav');
