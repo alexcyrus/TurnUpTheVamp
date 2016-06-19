@@ -12,9 +12,9 @@ ZenvaRunner.Preload.prototype = {
 
 		this.load.setPreloadSprite(this.preloadBar);
 
-		this.load.image('ground', 'assets/images/ground.png');
+		this.load.image('ground', 'assets/images/groundTop.png');
 		this.load.image('background', 'assets/images/background-3.jpg');
-		this.load.image('foreground', 'assets/images/foreground.png');
+		// this.load.image('foreground', 'assets/images/foreground.png');
 
 		this.load.spritesheet('coins', 'assets/images/hearts.png', 82, 72, 8);
 		this.load.spritesheet('player', 'assets/images/player.png', 283, 290, 2);
