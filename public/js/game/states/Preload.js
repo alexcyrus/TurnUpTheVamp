@@ -21,7 +21,7 @@ ZenvaRunner.Preload.prototype = {
 		this.load.spritesheet('enemy', 'assets/images/enemy.png', 157, 218, 1);
 
 		this.load.audio('gameMusic', ['assets/audio/disco_is_undead.mp3', 'assets/audio/Pamgaea.ogg']);
-		// this.load.audio('rocket', 'assets/audio/bounce.wav');
+		// this.load.audio('rocket', 'assets/audio/bird_flap.wav');
 		this.load.audio('bounce', 'assets/audio/bounce.wav');
 		this.load.audio('coin', 'assets/audio/coin.wav');
 		this.load.audio('death', 'assets/audio/death.wav');
