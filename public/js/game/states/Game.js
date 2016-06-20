@@ -59,9 +59,13 @@ ZenvaRunner.Game.prototype = {
     this.gameMusic.play('', 0, true);
 
     this.coinSpawnX = this.game.width + 64;
+
+    this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+    game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
 },
   update: function() {
-    if(this.game.input.activePointer.isDown) {
+    if(this.spaceKey.isDown) {
       this.player.body.velocity.y -= 25;
       if(!this.jetSound.isPlaying) {
         this.jetSound.play('', 0, true, 0.5);
@@ -70,14 +74,14 @@ ZenvaRunner.Game.prototype = {
       this.jetSound.stop();
     }
 
-    if( this.player.body.velocity.y < 0 || this.game.input.activePointer.isDown) {
+    if( this.player.body.velocity.y < 0 || this.spaceKey.isDown) {
       if(this.player.angle > 0) {
         this.player.angle = 0;
       }
       if(this.player.angle > this.playerMinAngle) {
         this.player.angle -= 0.5;
       }
-    } else if(this.player.body.velocity.y >=0 && !this.game.input.activePointer.idDown) {
+    } else if(this.player.body.velocity.y >=0 && !this.spaceKey.isDown) {
       if(this.player.angle < this.playerMaxAngle) {
         this.player.angle += 0.5;
       }

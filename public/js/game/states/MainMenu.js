@@ -26,9 +26,13 @@ ZenvaRunner.MainMenu.prototype = {
 		this.startText = this.game.add.bitmapText(0,0, 'minecraftia', 'tap to start', 32);
 		this.startText.x = this.game.width / 2 - this.startText.textWidth / 2;
 		this.startText.y = this.game.height / 2 + this.splash.height / 2;
+
+		this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+		game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
 	},
 	update: function() {
-		if(this.game.input.activePointer.justPressed()) {
+		if(this.spaceKey.isDown) {
 			this.game.state.start('Game');
 		}
 	}
