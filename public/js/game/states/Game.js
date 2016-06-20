@@ -1,6 +1,6 @@
 ZenvaRunner.Game = function() {
-  // this.playerMinAngle = -2;
-  // this.playerMaxAngle = 2;
+  this.playerMinAngle = -2;
+  this.playerMaxAngle = 2;
   
   this.coinRate = 1000;
   this.coinTimer = 0;
@@ -34,7 +34,7 @@ ZenvaRunner.Game.prototype = {
     this.player.scale.setTo(0.3);
 
     this.player.animations.add('fly', [0,1]);
-    this.player.animations.play('fly', 4, true);
+    this.player.animations.play('fly', 2, true);
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 400;

@@ -16,7 +16,7 @@ ZenvaRunner.MainMenu.prototype = {
 		this.player.scale.setTo(0.3);
 
 		this.player.animations.add('fly', [0,1]);
-		this.player.animations.play('fly', 4, true);
+		this.player.animations.play('fly', 2, true);
 
 		this.game.add.tween(this.player).to({y: this.player.y - 16}, 500, Phaser.Easing.Linear.NONE, true, 0, Infinity, true);
 
@@ -31,8 +31,5 @@ ZenvaRunner.MainMenu.prototype = {
 		if(this.game.input.activePointer.justPressed()) {
 			this.game.state.start('Game');
 		}
-		// if(this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)) {
-		// 	this.game.state.start('Game');
-		// }
 	}
 };

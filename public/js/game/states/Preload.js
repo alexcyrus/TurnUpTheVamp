@@ -16,8 +16,8 @@ ZenvaRunner.Preload.prototype = {
 		this.load.image('background', 'assets/images/background-3.jpg');
 		// this.load.image('foreground', 'assets/images/foreground.png');
 
-		this.load.spritesheet('coins', 'assets/images/hearts.png', 82, 72, 5);
-		this.load.spritesheet('player', 'assets/images/player.png', 283, 290, 2);
+		this.load.spritesheet('coins', 'assets/images/hearts.png', 82, 72, 4);
+		this.load.spritesheet('player', 'assets/images/player.png', 298, 305, 2);
 		this.load.spritesheet('enemy', 'assets/images/enemy.png', 157, 218, 1);
 
 		this.load.audio('gameMusic', ['assets/audio/disco_is_undead.mp3', 'assets/audio/Pamgaea.ogg']);
