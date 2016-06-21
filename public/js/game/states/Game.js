@@ -52,7 +52,7 @@ ZenvaRunner.Game.prototype = {
 
     this.scoreText = this.game.add.bitmapText(10,10, 'minecraftia', 'Score: 0', 24);
 
-    this.jetSound = this.game.add.audio('rocket');
+    // this.jetSound = this.game.add.audio('rocket');
     this.coinSound = this.game.add.audio('coin');
     this.deathSound = this.game.add.audio('death');
     this.gameMusic = this.game.add.audio('gameMusic');
@@ -67,12 +67,13 @@ ZenvaRunner.Game.prototype = {
   update: function() {
     if(this.spaceKey.isDown) {
       this.player.body.velocity.y -= 25;
-      if(!this.jetSound.isPlaying) {
-        this.jetSound.play('', 0, true, 0.5);
-      } 
-    } else {
-      this.jetSound.stop();
+      // if(!this.jetSound.isPlaying) {
+      //   this.jetSound.play('', 0, true, 0.5);
+      // } 
     }
+    // else {
+    //   this.jetSound.stop();
+    // }
 
     if( this.player.body.velocity.y < 0 || this.spaceKey.isDown) {
       if(this.player.angle > 0) {
@@ -221,7 +222,7 @@ ZenvaRunner.Game.prototype = {
     this.deathSound.play();
     this.gameMusic.stop();
     
-    // this.ground.stopScroll();
+    this.ground.stopScroll();
     this.background.stopScroll();
     // this.foreground.stopScroll();
 

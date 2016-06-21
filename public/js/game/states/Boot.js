@@ -4,7 +4,7 @@ ZenvaRunner.Boot = function() {};
 
 ZenvaRunner.Boot.prototype = {
 	preload: function() {
-		this.load.image('logo', 'assets/images/logo_edit.png');
+		this.load.image('logo', 'assets/images/face_logo.png');
 		this.load.image('preloadbar', 'assets/images/preloader-bar.png');
 	},
 	create: function() {

@@ -27,7 +27,7 @@ Scoreboard.prototype.show = function(score) {
 
 	this.y = this.game.height;
 
-	gameoverText = this.game.add.bitmapText(0,100, 'minecraftia', 'You Died.', 36);
+	gameoverText = this.game.add.bitmapText(0,100, 'minecraftia', 'Game Over', 36);
 	gameoverText.x = this.game.width / 2 - (gameoverText.textWidth / 2);
 	this.add(gameoverText);
 
@@ -39,7 +39,7 @@ Scoreboard.prototype.show = function(score) {
 	highScoreText.x = this.game.width / 2 - (highScoreText.textWidth / 2);
 	this.add(highScoreText);
 
-	startText = this.game.add.bitmapText(0,300, 'minecraftia', 'Tap to play again!', 16);
+	startText = this.game.add.bitmapText(0,300, 'minecraftia', 'Press space bar to play again!', 16);
 	startText.x = this.game.width / 2 - (startText.textWidth / 2);
 	this.add(startText);
 
