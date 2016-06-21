@@ -2,7 +2,7 @@ var Enemy = function(game, x, y, key, frame) {
 	key = 'enemy';
 	Phaser.Sprite.call(this, game, x, y, key, frame);
 
-	this.scale.setTo(0.3);
+	this.scale.setTo(0.4);
 	this.anchor.setTo(0.5);
 
 	this.animations.add('fly');
@@ -23,5 +23,5 @@ Enemy.prototype.onRevived = function() {
 	this.game.add.tween(this).to({y: this.y - 16}, 500, Phaser.Easing.Linear.NONE, true, 0, Infinity, true);
 	
 	this.body.velocity.x = -400;
-	this.animations.play('spin', 10, true);
+	this.animations.play('fly', 10, true);
 };
