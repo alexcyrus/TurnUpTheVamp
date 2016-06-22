@@ -247,9 +247,14 @@ ZenvaRunner.Game.prototype = {
     }, this);
 
   },
-  powerupHit: function(player, powerup) {
-    this.onHit;
-    this.toggleInvincible;
+  powerupHit: function(player, powerup, damage) {
+    if(!player.invincible) { 
+      //we toggle invincibility
+      this.toggleInvincible(player);
+      //and then we add a timer to restore the player to a vulnerable state
+      game.time.events.add(5000, this.toggleInvincible, this, player);
+    };
+
     this.score++;
     this.coinSound.play();
     powerup.kill();
@@ -266,39 +271,34 @@ ZenvaRunner.Game.prototype = {
       this.scoreText.text = 'Score: ' + this.score;
     }, this);
   },
-  onHit: function(damage) {
-    if (!player.invincible) { 
-    //We only damage the player if not invincible
-    player.health -= damage;
-    //we toggle invincibility
-    this.toggleInvincible();
-    //and then we add a timer to restore the player to a vulnerable state
-    game.time.events.add(5000, this.toggleInvincible, this);
-    }
-  },
-  toggleInvincible: function() {
+  toggleInvincible: function(player) {
+    console.log('toggling')
     player.invincible = !player.invincible;
   },
   enemyHit: function(player, enemy) {
-    player.kill();
+    console.log(player.invincible);
+    if (!player.invincible) {
+
+      player.kill();
+
+      this.deathSound.play();
+      this.gameMusic.stop();
+      
+      this.ground.stopScroll();
+      this.background.stopScroll();
+      // this.foreground.stopScroll();
+
+      this.enemies.setAll('body.velocity.x', 0);
+      this.coins.setAll('body.velocity.x', 0);
+      this.powerups.setAll('body.velocity.x', 0);
+
+      this.enemyTimer = Number.MAX_VALUE;
+      this.coinTimer = Number.MAX_VALUE;
+      this.powerupTimer = Number.MAX_VALUE;
+
+      var scoreboard = new Scoreboard(this.game);
+      scoreboard.show(this.score);
+    }
     enemy.kill();
-
-    this.deathSound.play();
-    this.gameMusic.stop();
-    
-    this.ground.stopScroll();
-    this.background.stopScroll();
-    // this.foreground.stopScroll();
-
-    this.enemies.setAll('body.velocity.x', 0);
-    this.coins.setAll('body.velocity.x', 0);
-    this.powerups.setAll('body.velocity.x', 0);
-
-    this.enemyTimer = Number.MAX_VALUE;
-    this.coinTimer = Number.MAX_VALUE;
-    this.powerupTimer = Number.MAX_VALUE;
-
-    var scoreboard = new Scoreboard(this.game);
-    scoreboard.show(this.score);
   }
 };
