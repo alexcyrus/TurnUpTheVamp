@@ -5,15 +5,23 @@ ZenvaRunner.Game = function() {
   this.coinRate = 1000;
   this.coinTimer = 0;
 
+  this.powerupRate = 30000;
+  this.powerupTimer = 0;
+
   this.enemyRate = 1000;
   this.enemyTimer = 0;
 
   this.score = 0;
   this.previousCoinType = null;
+  this.previousPowerUpType = null;
 
   this.coinSpawnX = null;
   this.coinSpacingX = 10;
   this.coinSpacingY = 10;
+
+  this.powerupSpawnX = null;
+  this.powerupSpacingX = 10;
+  this.powerupSpacingY = 10;
 };
 
 ZenvaRunner.Game.prototype = {
@@ -48,6 +56,7 @@ ZenvaRunner.Game.prototype = {
     this.player.body.bounce.set(0.25);
 
     this.coins = this.game.add.group();
+    this.powerups = this.game.add.group();
     this.enemies = this.game.add.group();
 
     this.scoreText = this.game.add.bitmapText(10,10, 'minecraftia', 'Score: 0', 24);
@@ -59,6 +68,7 @@ ZenvaRunner.Game.prototype = {
     this.gameMusic.play('', 0, true);
 
     this.coinSpawnX = this.game.width + 64;
+    this.powerupSpawnX = this.game.width + 64;
 
     this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
@@ -93,6 +103,11 @@ ZenvaRunner.Game.prototype = {
       this.coinTimer = this.game.time.now + this.coinRate;
     }
 
+    if(this.powerupTimer < this.game.time.now) {
+      this.createPowerUp();
+      this.powerupTimer = this.game.time.now + this.powerupRate;
+    }
+
     if(this.enemyTimer < this.game.time.now) {
       this.createEnemy();
       this.enemyTimer = this.game.time.now + this.enemyRate;
@@ -102,13 +117,16 @@ ZenvaRunner.Game.prototype = {
     this.game.physics.arcade.collide(this.player, this.ground, this.groundHit, null, this);
     this.game.physics.arcade.overlap(this.player, this.coins, this.coinHit, null, this);
     this.game.physics.arcade.overlap(this.player, this.enemies, this.enemyHit, null, this);
+    this.game.physics.arcade.overlap(this.player, this.powerups, this.powerupHit, null, this);
 
   },
   shutdown: function() {
     this.coins.destroy();
+    this.powerups.destroy();
     this.enemies.destroy();
     this.score = 0;
     this.coinTimer = 0;
+    this.powerupTimer = 0;
     this.enemyTimer = 0;
   },
   createCoin: function() {
@@ -124,6 +142,20 @@ ZenvaRunner.Game.prototype = {
     coin.reset(x, y);
     coin.revive();
     return coin;
+  },
+  createPowerUp: function() {
+    var x = this.game.width;
+    var y = this.game.rnd.integerInRange(50, this.game.world.height - 192);
+
+    var powerup = this.powerups.getFirstExists(false);
+    if(!powerup) {
+      powerup = new PowerUp(this.game, 0, 0);
+      this.powerups.add(powerup);
+    }
+
+    powerup.reset(x, y);
+    powerup.revive();
+    return powerup;
   },
   generateCoins: function() {
     if(!this.previousCoinType || this.previousCoinType < 3) {
@@ -215,6 +247,38 @@ ZenvaRunner.Game.prototype = {
     }, this);
 
   },
+  powerupHit: function(player, powerup) {
+    this.onHit;
+    this.toggleInvincible;
+    this.score++;
+    this.coinSound.play();
+    powerup.kill();
+
+    var dummyPowerUp = new PowerUp(this.game, powerup.x, powerup.y);
+    this.game.add.existing(dummyPowerUp);
+
+    dummyPowerUp.animations.play('spin', 40, true);
+
+    var scoreTween = this.game.add.tween(dummyPowerUp).to({x: 50, y: 50}, 300, Phaser.Easing.Linear.NONE, true);
+
+    scoreTween.onComplete.add(function() {
+      dummyPowerUp.destroy();
+      this.scoreText.text = 'Score: ' + this.score;
+    }, this);
+  },
+  onHit: function(damage) {
+    if (!player.invincible) { 
+    //We only damage the player if not invincible
+    player.health -= damage;
+    //we toggle invincibility
+    this.toggleInvincible();
+    //and then we add a timer to restore the player to a vulnerable state
+    game.time.events.add(5000, this.toggleInvincible, this);
+    }
+  },
+  toggleInvincible: function() {
+    player.invincible = !player.invincible;
+  },
   enemyHit: function(player, enemy) {
     player.kill();
     enemy.kill();
@@ -228,9 +292,11 @@ ZenvaRunner.Game.prototype = {
 
     this.enemies.setAll('body.velocity.x', 0);
     this.coins.setAll('body.velocity.x', 0);
+    this.powerups.setAll('body.velocity.x', 0);
 
     this.enemyTimer = Number.MAX_VALUE;
     this.coinTimer = Number.MAX_VALUE;
+    this.powerupTimer = Number.MAX_VALUE;
 
     var scoreboard = new Scoreboard(this.game);
     scoreboard.show(this.score);

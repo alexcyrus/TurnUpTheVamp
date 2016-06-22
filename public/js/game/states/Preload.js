@@ -19,6 +19,7 @@ ZenvaRunner.Preload.prototype = {
 		this.load.spritesheet('coins', 'assets/images/hearts.png', 82, 72, 4);
 		this.load.spritesheet('player', 'assets/images/player.png', 297, 301, 2);
 		this.load.spritesheet('enemy', 'assets/images/garlic.png', 157, 218, 1);
+		this.load.spritesheet('powerups', 'assets/images/powerups.png', 82, 72, 1);
 
 		this.load.audio('gameMusic', 'assets/audio/house.mp3');
 		// this.load.audio('rocket', 'assets/audio/bird_flap.wav');
