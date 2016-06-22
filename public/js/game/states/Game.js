@@ -63,6 +63,7 @@ ZenvaRunner.Game.prototype = {
 
     // this.jetSound = this.game.add.audio('rocket');
     this.coinSound = this.game.add.audio('coin');
+    this.bounceSound = this.game.add.audio('bounce');
     this.deathSound = this.game.add.audio('death');
     this.gameMusic = this.game.add.audio('gameMusic');
     this.gameMusic.play('', 0, true);
@@ -249,34 +250,23 @@ ZenvaRunner.Game.prototype = {
   },
   powerupHit: function(player, powerup, damage) {
     if(!player.invincible) { 
-      //we toggle invincibility
       this.toggleInvincible(player);
-      //and then we add a timer to restore the player to a vulnerable state
       game.time.events.add(5000, this.toggleInvincible, this, player);
     };
 
-    this.score++;
-    this.coinSound.play();
+    this.bounceSound.play();
     powerup.kill();
 
     var dummyPowerUp = new PowerUp(this.game, powerup.x, powerup.y);
     this.game.add.existing(dummyPowerUp);
 
     dummyPowerUp.animations.play('spin', 40, true);
-
-    var scoreTween = this.game.add.tween(dummyPowerUp).to({x: 50, y: 50}, 300, Phaser.Easing.Linear.NONE, true);
-
-    scoreTween.onComplete.add(function() {
-      dummyPowerUp.destroy();
-      this.scoreText.text = 'Score: ' + this.score;
-    }, this);
+    dummyPowerUp.destroy();
   },
   toggleInvincible: function(player) {
-    console.log('toggling')
     player.invincible = !player.invincible;
   },
   enemyHit: function(player, enemy) {
-    console.log(player.invincible);
     if (!player.invincible) {
 
       player.kill();
