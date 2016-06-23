@@ -1,8 +1,8 @@
-var Enemy = function(game, x, y, key, frame) {
-	key = 'enemy_big';
+var EnemyBig = function(game, x, y, key, frame) {
+	key = 'enemyBig';
 	Phaser.Sprite.call(this, game, x, y, key, frame);
 
-	this.scale.setTo(0.4);
+	this.scale.setTo(0.5);
 	this.anchor.setTo(0.5);
 
 	this.animations.add('fly');
@@ -16,10 +16,10 @@ var Enemy = function(game, x, y, key, frame) {
 	this.events.onRevived.add(this.onRevived, this);
 };
 
-Enemy.prototype = Object.create(Phaser.Sprite.prototype);
-Enemy.prototype.constructor = Enemy;
+EnemyBig.prototype = Object.create(Phaser.Sprite.prototype);
+EnemyBig.prototype.constructor = EnemyBig;
 
-Enemy.prototype.onRevived = function() {
+EnemyBig.prototype.onRevived = function() {
 	this.game.add.tween(this).to({y: this.y - 16}, 500, Phaser.Easing.Linear.NONE, true, 0, Infinity, true);
 	
 	this.body.velocity.x = -400;

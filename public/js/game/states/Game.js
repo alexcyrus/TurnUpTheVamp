@@ -11,6 +11,9 @@ ZenvaRunner.Game = function() {
   this.enemyRate = 1100;
   this.enemyTimer = 0;
 
+  this.enemyBigRate = 1100;
+  this.enemyBigTimer = 0;
+
   this.score = 0;
   this.previousCoinType = null;
   this.previousPowerUpType = null;
@@ -55,6 +58,7 @@ ZenvaRunner.Game.prototype = {
     this.coins = this.game.add.group();
     this.powerups = this.game.add.group();
     this.enemies = this.game.add.group();
+    this.enemiesBig = this.game.add.group();
 
     this.scoreText = this.game.add.bitmapText(10,10, 'minecraftia', 'Score: 0', 24);
 
@@ -71,7 +75,7 @@ ZenvaRunner.Game.prototype = {
 },
   update: function() {
     if(this.spaceKey.isDown) {
-      this.player.body.velocity.y -= 35;
+      this.player.body.velocity.y -= 25;
     }
 
     if( this.player.body.velocity.y < 0 || this.spaceKey.isDown) {
@@ -102,10 +106,10 @@ ZenvaRunner.Game.prototype = {
       this.enemyTimer = this.game.time.now + this.enemyRate;
     }
 
-
     this.game.physics.arcade.collide(this.player, this.ground, this.groundHit, null, this);
     this.game.physics.arcade.overlap(this.player, this.coins, this.coinHit, null, this);
     this.game.physics.arcade.overlap(this.player, this.enemies, this.enemyHit, null, this);
+    // this.game.physics.arcade.overlap(this.player, this.enemiesBig, this.enemyBigHit, null, this);
     this.game.physics.arcade.overlap(this.player, this.powerups, this.powerupHit, null, this);
 
   },
@@ -113,10 +117,12 @@ ZenvaRunner.Game.prototype = {
     this.coins.destroy();
     this.powerups.destroy();
     this.enemies.destroy();
+    this.enemiesBig.destroy();
     this.score = 0;
     this.coinTimer = 0;
     this.powerupTimer = 0;
     this.enemyTimer = 0;
+    this.enemyBigTimer = 0;
   },
   createCoin: function() {
     var x = this.game.width;
@@ -207,6 +213,14 @@ ZenvaRunner.Game.prototype = {
     var x = this.game.width;
     var y = this.game.rnd.integerInRange(50, this.game.world.height - 192);
 
+    var enemyBig = this.enemiesBig.getFirstExists(false);
+    if(!enemyBig) {
+      enemyBig = new EnemyBig(this.game, 0, 0);
+      this.enemiesBig.add(enemyBig);
+    }
+    enemyBig.reset(x, y);
+    enemyBig.revive();
+
     var enemy = this.enemies.getFirstExists(false);
     if(!enemy) {
       enemy = new Enemy(this.game, 0, 0);
@@ -214,6 +228,7 @@ ZenvaRunner.Game.prototype = {
     }
     enemy.reset(x, y);
     enemy.revive();
+
   },
   groundHit: function(player, ground) {
     player.body.velocity.y = -200;
@@ -234,7 +249,6 @@ ZenvaRunner.Game.prototype = {
       dummyCoin.destroy();
       this.scoreText.text = 'Score: ' + this.score;
     }, this);
-
   },
   powerupHit: function(player, powerup, damage) {
     if(!player.invincible) { 
@@ -272,6 +286,32 @@ ZenvaRunner.Game.prototype = {
       this.background.stopScroll();
 
       this.enemies.setAll('body.velocity.x', 0);
+      this.enemiesBig.setAll('body.velocity.x', 0);
+      this.coins.setAll('body.velocity.x', 0);
+      this.powerups.setAll('body.velocity.x', 0);
+
+      this.enemyTimer = Number.MAX_VALUE;
+      this.enemyBigTimer = Number.MAX_VALUE;
+      this.coinTimer = Number.MAX_VALUE;
+      this.powerupTimer = Number.MAX_VALUE;
+
+      var scoreboard = new Scoreboard(this.game);
+      scoreboard.show(this.score);
+    }
+    enemy.kill();
+  },
+  enemyBigHit: function(player, enemyBig) {
+    if (!player.invincible) {
+
+      player.kill();
+
+      this.deathSound.play();
+      this.gameMusic.stop();
+      
+      this.ground.stopScroll();
+      this.background.stopScroll();
+
+      this.enemies.setAll('body.velocity.x', 0);
       this.coins.setAll('body.velocity.x', 0);
       this.powerups.setAll('body.velocity.x', 0);
 
@@ -282,6 +322,6 @@ ZenvaRunner.Game.prototype = {
       var scoreboard = new Scoreboard(this.game);
       scoreboard.show(this.score);
     }
-    enemy.kill();
+    enemyBig.kill();
   }
 };
