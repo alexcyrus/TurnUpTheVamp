@@ -33,7 +33,7 @@ ZenvaRunner.MainMenu.prototype = {
 
 		this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
-		game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
+		// game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
 	},
 	update: function() {
 		if(this.spaceKey.isDown) {
