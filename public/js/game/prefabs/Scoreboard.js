@@ -39,7 +39,7 @@ Scoreboard.prototype.show = function(score) {
 	highScoreText.x = this.game.width / 2 - (highScoreText.textWidth / 2);
 	this.add(highScoreText);
 
-	startText = this.game.add.bitmapText(0,300, 'minecraftia', 'Press space bar to play again!', 16);
+	startText = this.game.add.bitmapText(0,300, 'minecraftia', 'Click anywhere to play again!', 16);
 	startText.x = this.game.width / 2 - (startText.textWidth / 2);
 	this.add(startText);
 

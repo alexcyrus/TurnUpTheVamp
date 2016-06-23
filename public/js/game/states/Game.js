@@ -265,6 +265,12 @@ ZenvaRunner.Game.prototype = {
   },
   toggleInvincible: function(player) {
     player.invincible = !player.invincible;
+    if (player.invincible) {
+      player.tint = 0xff00ff;
+    }
+    else {
+      player.tint = 16777215;
+    }
   },
   enemyHit: function(player, enemy) {
     if (!player.invincible) {
