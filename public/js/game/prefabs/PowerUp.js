@@ -2,7 +2,7 @@ var PowerUp = function(game, x, y, key, frame) {
 	key = 'powerups';
 	Phaser.Sprite.call(this, game, x, y, key, frame);
 
-	this.scale.setTo(0.8);
+	this.scale.setTo(0.75);
 	this.anchor.setTo(0.5);
 
 	this.animations.add('spin');

@@ -1,14 +1,14 @@
 ZenvaRunner.Game = function() {
-  this.playerMinAngle = -2;
-  this.playerMaxAngle = 2;
+  this.playerMinAngle = -9;
+  this.playerMaxAngle = 1;
   
   this.coinRate = 1000;
   this.coinTimer = 0;
 
-  this.powerupRate = 30000;
+  this.powerupRate = 20000;
   this.powerupTimer = 0;
 
-  this.enemyRate = 1000;
+  this.enemyRate = 1100;
   this.enemyTimer = 0;
 
   this.score = 0;
@@ -30,9 +30,6 @@ ZenvaRunner.Game.prototype = {
     this.game.world.bound = new Phaser.Rectangle(0,0, this.game.width + 300, this.game.height);
     this.background = this.game.add.tileSprite(0, 0, this.game.width, 768, 'background');
     this.background.autoScroll(-100, 0);
-
-    // this.foreground = this.game.add.tileSprite(0, 470, this.game.width, this.game.height - 533, 'foreground');
-    // this.foreground.autoScroll(-100,0);
 
     this.ground = this.game.add.tileSprite(0, this.game.height - 73, this.game.width, 73, 'ground');
     this.ground.autoScroll(-400, 0);
@@ -61,7 +58,6 @@ ZenvaRunner.Game.prototype = {
 
     this.scoreText = this.game.add.bitmapText(10,10, 'minecraftia', 'Score: 0', 24);
 
-    // this.jetSound = this.game.add.audio('rocket');
     this.coinSound = this.game.add.audio('coin');
     this.bounceSound = this.game.add.audio('bounce');
     this.deathSound = this.game.add.audio('death');
@@ -72,19 +68,11 @@ ZenvaRunner.Game.prototype = {
     this.powerupSpawnX = this.game.width + 64;
 
     this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-
-    // game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
 },
   update: function() {
     if(this.spaceKey.isDown) {
-      this.player.body.velocity.y -= 25;
-      // if(!this.jetSound.isPlaying) {
-      //   this.jetSound.play('', 0, true, 0.5);
-      // } 
+      this.player.body.velocity.y -= 35;
     }
-    // else {
-    //   this.jetSound.stop();
-    // }
 
     if( this.player.body.velocity.y < 0 || this.spaceKey.isDown) {
       if(this.player.angle > 0) {
@@ -282,7 +270,6 @@ ZenvaRunner.Game.prototype = {
       
       this.ground.stopScroll();
       this.background.stopScroll();
-      // this.foreground.stopScroll();
 
       this.enemies.setAll('body.velocity.x', 0);
       this.coins.setAll('body.velocity.x', 0);
