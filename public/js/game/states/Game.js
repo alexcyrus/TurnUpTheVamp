@@ -72,7 +72,7 @@ ZenvaRunner.Game.prototype = {
 },
   update: function() {
     if(this.spaceKey.isDown) {
-      this.player.body.velocity.y -= 30;
+      this.player.body.velocity.y -= 27.5;
     }
 
     if( this.player.body.velocity.y < 0 || this.spaceKey.isDown) {
@@ -247,7 +247,6 @@ ZenvaRunner.Game.prototype = {
   powerupHit: function(player, powerup, damage) {
     if(!player.invincible) { 
       this.toggleInvincible(player);
-      game.time.events.add(8000, this.toggleInvincible, this, player);
     };
 
     this.bounceSound.play();
@@ -263,8 +262,24 @@ ZenvaRunner.Game.prototype = {
     player.invincible = !player.invincible;
     if (player.invincible) {
       player.tint = 0xff00ff;
+      game.time.events.add(3000, this.toggleWarning, this, player);
+      game.time.events.add(5000, this.toggleInvincible, this, player);
     }
     else {
+      player.tint = 16777215;
+      // call toggleWarning again here
+
+    }
+  },
+  toggleWarning: function(player) {
+    if (player.invincible) {
+      player.alpha = 0;
+      tween = game.add.tween(player).to( {
+        alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+      game.time.events.add(3000, this.toggleWarning, this, player);
+      }
+    else {
+      // code to remove tween
       player.tint = 16777215;
     }
   },
