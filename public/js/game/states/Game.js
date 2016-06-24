@@ -8,11 +8,8 @@ ZenvaRunner.Game = function() {
   this.powerupRate = 20000;
   this.powerupTimer = 0;
 
-  this.enemyRate = 1100;
+  this.enemyRate = 800;
   this.enemyTimer = 0;
-
-  this.enemyBigRate = 1100;
-  this.enemyBigTimer = 0;
 
   this.score = 0;
   this.previousCoinType = null;
@@ -109,9 +106,7 @@ ZenvaRunner.Game.prototype = {
     this.game.physics.arcade.collide(this.player, this.ground, this.groundHit, null, this);
     this.game.physics.arcade.overlap(this.player, this.coins, this.coinHit, null, this);
     this.game.physics.arcade.overlap(this.player, this.enemies, this.enemyHit, null, this);
-    // this.game.physics.arcade.overlap(this.player, this.enemiesBig, this.enemyBigHit, null, this);
     this.game.physics.arcade.overlap(this.player, this.powerups, this.powerupHit, null, this);
-
   },
   shutdown: function() {
     this.coins.destroy();
@@ -122,7 +117,6 @@ ZenvaRunner.Game.prototype = {
     this.coinTimer = 0;
     this.powerupTimer = 0;
     this.enemyTimer = 0;
-    this.enemyBigTimer = 0;
   },
   createCoin: function() {
     var x = this.game.width;
@@ -291,7 +285,6 @@ ZenvaRunner.Game.prototype = {
       this.powerups.setAll('body.velocity.x', 0);
 
       this.enemyTimer = Number.MAX_VALUE;
-      this.enemyBigTimer = Number.MAX_VALUE;
       this.coinTimer = Number.MAX_VALUE;
       this.powerupTimer = Number.MAX_VALUE;
 
@@ -299,29 +292,5 @@ ZenvaRunner.Game.prototype = {
       scoreboard.show(this.score);
     }
     enemy.kill();
-  },
-  enemyBigHit: function(player, enemyBig) {
-    if (!player.invincible) {
-
-      player.kill();
-
-      this.deathSound.play();
-      this.gameMusic.stop();
-      
-      this.ground.stopScroll();
-      this.background.stopScroll();
-
-      this.enemies.setAll('body.velocity.x', 0);
-      this.coins.setAll('body.velocity.x', 0);
-      this.powerups.setAll('body.velocity.x', 0);
-
-      this.enemyTimer = Number.MAX_VALUE;
-      this.coinTimer = Number.MAX_VALUE;
-      this.powerupTimer = Number.MAX_VALUE;
-
-      var scoreboard = new Scoreboard(this.game);
-      scoreboard.show(this.score);
-    }
-    enemyBig.kill();
   }
 };
