@@ -5,9 +5,6 @@ ZenvaRunner.MainMenu.prototype = {
 		this.background = this.game.add.tileSprite(0, 0, this.game.width, 768, 'background');
 		this.background.autoScroll(-100, 0);
 
-		// this.foreground = this.game.add.tileSprite(0, 470, this.game.width, this.game.height - 533, 'foreground');
-		// this.foreground.autoScroll(-100, 0);
-
 		this.ground = this.game.add.tileSprite(0, this.game.height - 73, this.game.width, 73, 'ground');
 		this.ground.autoScroll(-400, 0);
 
@@ -32,8 +29,6 @@ ZenvaRunner.MainMenu.prototype = {
 		this.startText.y = this.game.height / 2 + this.splash.height / 2;
 
 		this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-
-		// game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
 	},
 	update: function() {
 		if(this.spaceKey.isDown) {

@@ -1,11 +1,11 @@
-var Coin = function(game, x, y, key, frame) {
-	key = 'coins';
+var Heart = function(game, x, y, key, frame) {
+	key = 'hearts';
 	Phaser.Sprite.call(this, game, x, y, key, frame);
 
 	this.scale.setTo(0.5);
 	this.anchor.setTo(0.5);
 
-	this.animations.add('spin');
+	this.animations.add('shine');
 
 	this.game.physics.arcade.enableBody(this);
 	this.body.allowGravity = false;
@@ -17,14 +17,14 @@ var Coin = function(game, x, y, key, frame) {
 	this.events.onRevived.add(this.onRevived, this);
 };
 
-Coin.prototype = Object.create(Phaser.Sprite.prototype);
-Coin.prototype.constructor = Coin;
+Heart.prototype = Object.create(Phaser.Sprite.prototype);
+Heart.prototype.constructor = Heart;
 
-Coin.prototype.onRevived = function() {
+Heart.prototype.onRevived = function() {
 	this.body.velocity.x = -400;
-	this.animations.play('spin', 10, true);
+	this.animations.play('shine', 10, true);
 };
 
-Coin.prototype.onKilled = function() {
+Heart.prototype.onKilled = function() {
 	this.animations.frame = 0;
 };

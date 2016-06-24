@@ -2,22 +2,22 @@ ZenvaRunner.Game = function() {
   this.playerMinAngle = -9;
   this.playerMaxAngle = 1;
   
-  this.coinRate = 1000;
-  this.coinTimer = 0;
+  this.heartRate = 1000;
+  this.heartTimer = 0;
 
-  this.powerupRate = 20000;
+  this.powerupRate = 23000;
   this.powerupTimer = 0;
 
   this.enemyRate = 800;
   this.enemyTimer = 0;
 
   this.score = 0;
-  this.previousCoinType = null;
+  this.previousHeartType = null;
   this.previousPowerUpType = null;
 
-  this.coinSpawnX = null;
-  this.coinSpacingX = 10;
-  this.coinSpacingY = 10;
+  this.heartSpawnX = null;
+  this.heartSpacingX = 10;
+  this.heartSpacingY = 10;
 
   this.powerupSpawnX = null;
   this.powerupSpacingX = 10;
@@ -52,27 +52,27 @@ ZenvaRunner.Game.prototype = {
     this.player.body.collideWorldBounds = true;
     this.player.body.bounce.set(0.25);
 
-    this.coins = this.game.add.group();
+    this.hearts = this.game.add.group();
     this.powerups = this.game.add.group();
     this.enemies = this.game.add.group();
     this.enemiesBig = this.game.add.group();
 
     this.scoreText = this.game.add.bitmapText(10,10, 'minecraftia', 'Score: 0', 24);
 
-    this.coinSound = this.game.add.audio('coin');
+    this.heartSound = this.game.add.audio('heart');
     this.bounceSound = this.game.add.audio('bounce');
     this.deathSound = this.game.add.audio('death');
     this.gameMusic = this.game.add.audio('gameMusic');
     this.gameMusic.play('', 0, true);
 
-    this.coinSpawnX = this.game.width + 64;
+    this.heartSpawnX = this.game.width + 64;
     this.powerupSpawnX = this.game.width + 64;
 
     this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 },
   update: function() {
     if(this.spaceKey.isDown) {
-      this.player.body.velocity.y -= 25;
+      this.player.body.velocity.y -= 30;
     }
 
     if( this.player.body.velocity.y < 0 || this.spaceKey.isDown) {
@@ -88,9 +88,9 @@ ZenvaRunner.Game.prototype = {
       }
     }
 
-    if(this.coinTimer < this.game.time.now) {
-      this.generateCoins();
-      this.coinTimer = this.game.time.now + this.coinRate;
+    if(this.heartTimer < this.game.time.now) {
+      this.generateHearts();
+      this.heartTimer = this.game.time.now + this.heartRate;
     }
 
     if(this.powerupTimer < this.game.time.now) {
@@ -104,33 +104,33 @@ ZenvaRunner.Game.prototype = {
     }
 
     this.game.physics.arcade.collide(this.player, this.ground, this.groundHit, null, this);
-    this.game.physics.arcade.overlap(this.player, this.coins, this.coinHit, null, this);
+    this.game.physics.arcade.overlap(this.player, this.hearts, this.heartHit, null, this);
     this.game.physics.arcade.overlap(this.player, this.enemies, this.enemyHit, null, this);
     this.game.physics.arcade.overlap(this.player, this.powerups, this.powerupHit, null, this);
   },
   shutdown: function() {
-    this.coins.destroy();
+    this.hearts.destroy();
     this.powerups.destroy();
     this.enemies.destroy();
     this.enemiesBig.destroy();
     this.score = 0;
-    this.coinTimer = 0;
+    this.heartTimer = 0;
     this.powerupTimer = 0;
     this.enemyTimer = 0;
   },
-  createCoin: function() {
+  createHeart: function() {
     var x = this.game.width;
     var y = this.game.rnd.integerInRange(50, this.game.world.height - 192);
 
-    var coin = this.coins.getFirstExists(false);
-    if(!coin) {
-      coin = new Coin(this.game, 0, 0);
-      this.coins.add(coin);
+    var heart = this.hearts.getFirstExists(false);
+    if(!heart) {
+      heart = new Heart(this.game, 0, 0);
+      this.hearts.add(heart);
     }
 
-    coin.reset(x, y);
-    coin.revive();
-    return coin;
+    heart.reset(x, y);
+    heart.revive();
+    return heart;
   },
   createPowerUp: function() {
     var x = this.game.width;
@@ -146,60 +146,60 @@ ZenvaRunner.Game.prototype = {
     powerup.revive();
     return powerup;
   },
-  generateCoins: function() {
-    if(!this.previousCoinType || this.previousCoinType < 3) {
-      var coinType = this.game.rnd.integer() % 5;
-      switch(coinType) {
+  generateHearts: function() {
+    if(!this.previousHeartType || this.previousHeartType < 3) {
+      var heartType = this.game.rnd.integer() % 5;
+      switch(heartType) {
         case 0:
-          //do nothing. No coins generated
+          //do nothing. No hearts generated
           break;
         case 1:
         case 2:
-          // if the cointype is 1 or 2, create a single coin
-          //this.createCoin();
-          this.createCoin();
+          // if the hearttype is 1 or 2, create a single heart
+          //this.createHeart();
+          this.createHeart();
 
           break;
         case 3:
-          // create a small group of coins
-          this.createCoinGroup(2, 2);
+          // create a small group of hearts
+          this.createHeartGroup(2, 2);
           break;
         case 4:
-          //create a large coin group
-          this.createCoinGroup(6, 2);
+          //create a large heart group
+          this.createHeartGroup(6, 2);
           break;
         default:
-          // if somehow we error on the cointype, set the previouscointype to zero and do nothing
-          this.previousCoinType = 0;
+          // if somehow we error on the hearttype, set the previoushearttype to zero and do nothing
+          this.previousHeartType = 0;
           break;
       }
 
-      this.previousCoinType = coinType;
+      this.previousHeartType = heartType;
     } else {
-      if(this.previousCoinType === 4) {
-        // the previous coin generated was a large group, 
+      if(this.previousHeartType === 4) {
+        // the previous heart generated was a large group, 
         // skip the next generation as well
-        this.previousCoinType = 3;
+        this.previousHeartType = 3;
       } else {
-        this.previousCoinType = 0;  
+        this.previousHeartType = 0;  
       }
       
     }
   },
-  createCoinGroup: function(columns, rows) {
-    //create 4 coins in a group
-    var coinSpawnY = this.game.rnd.integerInRange(50, this.game.world.height - 192);
-    var coinRowCounter = 0;
-    var coinColumnCounter = 0;
-    var coin;
+  createHeartGroup: function(columns, rows) {
+    //create 4 hearts in a group
+    var heartSpawnY = this.game.rnd.integerInRange(50, this.game.world.height - 192);
+    var heartRowCounter = 0;
+    var heartColumnCounter = 0;
+    var heart;
     for(var i = 0; i < columns * rows; i++) {
-      coin = this.createCoin(this.spawnX, coinSpawnY);
-      coin.x = coin.x + (coinColumnCounter * coin.width) + (coinColumnCounter * this.coinSpacingX);
-      coin.y = coinSpawnY + (coinRowCounter * coin.height) + (coinRowCounter * this.coinSpacingY);
-      coinColumnCounter++;
+      heart = this.createHeart(this.spawnX, heartSpawnY);
+      heart.x = heart.x + (heartColumnCounter * heart.width) + (heartColumnCounter * this.heartSpacingX);
+      heart.y = heartSpawnY + (heartRowCounter * heart.height) + (heartRowCounter * this.heartSpacingY);
+      heartColumnCounter++;
       if(i+1 >= columns && (i+1) % columns === 0) {
-        coinRowCounter++;
-        coinColumnCounter = 0;
+        heartRowCounter++;
+        heartColumnCounter = 0;
       } 
     }
   },
@@ -227,27 +227,27 @@ ZenvaRunner.Game.prototype = {
   groundHit: function(player, ground) {
     player.body.velocity.y = -200;
   },
-  coinHit: function(player, coin) {
+  heartHit: function(player, heart) {
     this.score++;
-    this.coinSound.play();
-    coin.kill();
+    this.heartSound.play();
+    heart.kill();
 
-    var dummyCoin = new Coin(this.game, coin.x, coin.y);
-    this.game.add.existing(dummyCoin);
+    var dummyHeart = new Heart(this.game, heart.x, heart.y);
+    this.game.add.existing(dummyHeart);
 
-    dummyCoin.animations.play('spin', 40, true);
+    dummyHeart.animations.play('spin', 40, true);
 
-    var scoreTween = this.game.add.tween(dummyCoin).to({x: 50, y: 50}, 300, Phaser.Easing.Linear.NONE, true);
+    var scoreTween = this.game.add.tween(dummyHeart).to({x: 50, y: 50}, 300, Phaser.Easing.Linear.NONE, true);
 
     scoreTween.onComplete.add(function() {
-      dummyCoin.destroy();
+      dummyHeart.destroy();
       this.scoreText.text = 'Score: ' + this.score;
     }, this);
   },
   powerupHit: function(player, powerup, damage) {
     if(!player.invincible) { 
       this.toggleInvincible(player);
-      game.time.events.add(5000, this.toggleInvincible, this, player);
+      game.time.events.add(8000, this.toggleInvincible, this, player);
     };
 
     this.bounceSound.play();
@@ -281,11 +281,11 @@ ZenvaRunner.Game.prototype = {
 
       this.enemies.setAll('body.velocity.x', 0);
       this.enemiesBig.setAll('body.velocity.x', 0);
-      this.coins.setAll('body.velocity.x', 0);
+      this.hearts.setAll('body.velocity.x', 0);
       this.powerups.setAll('body.velocity.x', 0);
 
       this.enemyTimer = Number.MAX_VALUE;
-      this.coinTimer = Number.MAX_VALUE;
+      this.heartTimer = Number.MAX_VALUE;
       this.powerupTimer = Number.MAX_VALUE;
 
       var scoreboard = new Scoreboard(this.game);
