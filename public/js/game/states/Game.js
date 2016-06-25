@@ -264,9 +264,6 @@ ZenvaRunner.Game.prototype = {
       this.game.add.tween(player).to({tint: 0xff00ff,}, 2500, Phaser.Easing.Exponential.Out, true, 0, 0, true);
       game.time.events.add(5000, this.toggleInvincible, this, player);
     }
-    else {
-      // player.tint = 16777215;
-    }
   },
   enemyHit: function(player, enemy) {
     if (!player.invincible) {
