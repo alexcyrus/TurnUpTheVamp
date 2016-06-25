@@ -5,7 +5,7 @@ ZenvaRunner.Game = function() {
   this.heartRate = 1000;
   this.heartTimer = 0;
 
-  this.powerupRate = 23000;
+  this.powerupRate = 20000;
   this.powerupTimer = 0;
 
   this.enemyRate = 800;
@@ -261,26 +261,11 @@ ZenvaRunner.Game.prototype = {
   toggleInvincible: function(player) {
     player.invincible = !player.invincible;
     if (player.invincible) {
-      player.tint = 0xff00ff;
-      game.time.events.add(3000, this.toggleWarning, this, player);
+      this.game.add.tween(player).to({tint: 0xff00ff,}, 2500, Phaser.Easing.Exponential.Out, true, 0, 0, true);
       game.time.events.add(5000, this.toggleInvincible, this, player);
     }
     else {
-      player.tint = 16777215;
-      // call toggleWarning again here
-
-    }
-  },
-  toggleWarning: function(player) {
-    if (player.invincible) {
-      player.alpha = 0;
-      tween = game.add.tween(player).to( {
-        alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
-      game.time.events.add(3000, this.toggleWarning, this, player);
-      }
-    else {
-      // code to remove tween
-      player.tint = 16777215;
+      // player.tint = 16777215;
     }
   },
   enemyHit: function(player, enemy) {
