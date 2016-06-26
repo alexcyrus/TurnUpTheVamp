@@ -5,6 +5,9 @@ TurnUpTheVamp.Game = function() {
   this.heartRate = 1000;
   this.heartTimer = 0;
 
+  this.heartBigRate = 10000;
+  this.heartBigTimer = 0;
+
   this.powerupRate = 20000;
   this.powerupTimer = 0;
 
@@ -18,6 +21,10 @@ TurnUpTheVamp.Game = function() {
   this.heartSpawnX = null;
   this.heartSpacingX = 10;
   this.heartSpacingY = 10;
+
+  this.heartBigSpawnX = null;
+  this.heartBigSpacingX = 10;
+  this.heartBigSpacingY = 10;
 
   this.powerupSpawnX = null;
   this.powerupSpacingX = 10;
@@ -53,6 +60,7 @@ TurnUpTheVamp.Game.prototype = {
     this.player.body.bounce.set(0.25);
 
     this.hearts = this.game.add.group();
+    this.heartsBig = this.game.add.group();
     this.powerups = this.game.add.group();
     this.enemies = this.game.add.group();
     this.enemiesBig = this.game.add.group();
@@ -67,6 +75,7 @@ TurnUpTheVamp.Game.prototype = {
     this.dubstepMusic = this.game.add.audio('dubstep');
 
     this.heartSpawnX = this.game.width + 64;
+    this.heartBigSpawnX = this.game.width + 64;
     this.powerupSpawnX = this.game.width + 64;
 
     this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -94,6 +103,11 @@ TurnUpTheVamp.Game.prototype = {
       this.heartTimer = this.game.time.now + this.heartRate;
     }
 
+    if(this.heartBigTimer < this.game.time.now) {
+      this.createHeartBig();
+      this.heartBigTimer = this.game.time.now + this.heartBigRate;
+    }
+
     if(this.powerupTimer < this.game.time.now) {
       this.createPowerUp();
       this.powerupTimer = this.game.time.now + this.powerupRate;
@@ -106,16 +120,19 @@ TurnUpTheVamp.Game.prototype = {
 
     this.game.physics.arcade.collide(this.player, this.ground, this.groundHit, null, this);
     this.game.physics.arcade.overlap(this.player, this.hearts, this.heartHit, null, this);
+    this.game.physics.arcade.overlap(this.player, this.heartsBig, this.heartBigHit, null, this);
     this.game.physics.arcade.overlap(this.player, this.enemies, this.enemyHit, null, this);
     this.game.physics.arcade.overlap(this.player, this.powerups, this.powerupHit, null, this);
   },
   shutdown: function() {
     this.hearts.destroy();
+    this.heartsBig.destroy();
     this.powerups.destroy();
     this.enemies.destroy();
     this.enemiesBig.destroy();
     this.score = 0;
     this.heartTimer = 0;
+    this.heartBigTimer = 0;
     this.powerupTimer = 0;
     this.enemyTimer = 0;
   },
@@ -132,6 +149,20 @@ TurnUpTheVamp.Game.prototype = {
     heart.reset(x, y);
     heart.revive();
     return heart;
+  },
+  createHeartBig: function() {
+    var x = this.game.width;
+    var y = this.game.rnd.integerInRange(50, this.game.world.height - 192);
+
+    var heartBig = this.heartsBig.getFirstExists(false);
+    if(!heartBig) {
+      heartBig = new HeartBig(this.game, 0, 0);
+      this.heartsBig.add(heartBig);
+    }
+
+    heartBig.reset(x, y);
+    heartBig.revive();
+    return heartBig;
   },
   createPowerUp: function() {
     var x = this.game.width;
@@ -245,6 +276,27 @@ TurnUpTheVamp.Game.prototype = {
       this.scoreText.text = 'Score: ' + this.score;
     }, this);
   },
+  heartBigHit: function(player, heartBig) {
+    this.score++;
+    this.score++;
+    this.score++;
+    this.score++;
+    this.score++;
+    this.heartSound.play();
+    heartBig.kill();
+
+    var dummyHeartBig = new HeartBig(this.game, heartBig.x, heartBig.y);
+    this.game.add.existing(dummyHeartBig);
+
+    dummyHeartBig.animations.play('spin', 40, true);
+
+    var scoreTween = this.game.add.tween(dummyHeartBig).to({x: 50, y: 50}, 300, Phaser.Easing.Linear.NONE, true);
+
+    scoreTween.onComplete.add(function() {
+      dummyHeartBig.destroy();
+      this.scoreText.text = 'Score: ' + this.score;
+    }, this);
+  },
   powerupHit: function(player, powerup, damage) {
     if(!player.invincible) { 
       this.toggleInvincible(player);
@@ -286,10 +338,12 @@ TurnUpTheVamp.Game.prototype = {
       this.enemies.setAll('body.velocity.x', 0);
       this.enemiesBig.setAll('body.velocity.x', 0);
       this.hearts.setAll('body.velocity.x', 0);
+      this.heartsBig.setAll('body.velocity.x', 0);
       this.powerups.setAll('body.velocity.x', 0);
 
       this.enemyTimer = Number.MAX_VALUE;
       this.heartTimer = Number.MAX_VALUE;
+      this.heartBigTimer = Number.MAX_VALUE;
       this.powerupTimer = Number.MAX_VALUE;
 
       var scoreboard = new Scoreboard(this.game);

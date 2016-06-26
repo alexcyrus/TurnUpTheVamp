@@ -5,7 +5,6 @@ TurnUpTheVamp.MainMenu.prototype = {
 		this.background = this.game.add.tileSprite(0, 0, this.game.width, 768, 'background');
 		this.background.autoScroll(-100, 0);
 
-
 		this.ground = this.game.add.tileSprite(0, this.game.height - 73, this.game.width, 73, 'ground');
 		this.ground.autoScroll(-400, 0);
 
