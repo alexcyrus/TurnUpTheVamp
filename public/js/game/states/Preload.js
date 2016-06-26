@@ -1,8 +1,8 @@
-ZenvaRunner.Preload = function() {
+TurnUpTheVamp.Preload = function() {
 	this.ready = false;
 };
 
-ZenvaRunner.Preload.prototype = {
+TurnUpTheVamp.Preload.prototype = {
 	preload: function() {
 		this.splash = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'logo');
 		this.splash.anchor.setTo(0.5);
@@ -12,8 +12,8 @@ ZenvaRunner.Preload.prototype = {
 
 		this.load.setPreloadSprite(this.preloadBar);
 
-		this.load.image('ground', 'assets/images/groundTop.png');
-		this.load.image('background', 'assets/images/background-3.jpg');
+		this.load.image('ground', 'assets/images/ground.png');
+		this.load.image('background', 'assets/images/background.jpg');
 
 		this.load.spritesheet('hearts', 'assets/images/hearts.png', 82, 72, 4);
 		this.load.spritesheet('player', 'assets/images/player.png', 297, 301, 2);

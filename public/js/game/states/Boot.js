@@ -1,8 +1,8 @@
-var ZenvaRunner = function() {};
+var TurnUpTheVamp = function() {};
 
-ZenvaRunner.Boot = function() {};
+TurnUpTheVamp.Boot = function() {};
 
-ZenvaRunner.Boot.prototype = {
+TurnUpTheVamp.Boot.prototype = {
 	preload: function() {
 		this.load.image('logo', 'assets/images/face_logo.png');
 		this.load.image('preloadbar', 'assets/images/preloader-bar.png');

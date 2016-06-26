@@ -1,4 +1,4 @@
-ZenvaRunner.Game = function() {
+TurnUpTheVamp.Game = function() {
   this.playerMinAngle = -9;
   this.playerMaxAngle = 1;
   
@@ -24,7 +24,7 @@ ZenvaRunner.Game = function() {
   this.powerupSpacingY = 10;
 };
 
-ZenvaRunner.Game.prototype = {
+TurnUpTheVamp.Game.prototype = {
   create: function() {
 
     this.game.world.bound = new Phaser.Rectangle(0,0, this.game.width + 300, this.game.height);
@@ -263,9 +263,9 @@ ZenvaRunner.Game.prototype = {
     player.invincible = !player.invincible;
     if (player.invincible) {
       this.game.add.tween(player).to({tint: 0xff00ff,}, 2500, Phaser.Easing.Exponential.Out, true, 0, 0, true);
-      game.time.events.add(5000, this.toggleInvincible, this, player);
       this.gameMusic.pause();
-      this.dubstepMusic.play('', 5);
+      this.dubstepMusic.play('', 4.75);
+      game.time.events.add(5000, this.toggleInvincible, this, player);
     }
     else {
       this.dubstepMusic.stop();
