@@ -5,7 +5,7 @@ TurnUpTheVamp.Game = function() {
   this.heartRate = 1000;
   this.heartTimer = 0;
 
-  this.heartBigRate = 10000;
+  this.heartBigRate = 9000;
   this.heartBigTimer = 0;
 
   this.powerupRate = 20000;
@@ -311,7 +311,7 @@ TurnUpTheVamp.Game.prototype = {
     dummyPowerUp.animations.play('spin', 40, true);
     dummyPowerUp.destroy();
   },
-  toggleInvincible: function(player) {
+  toggleInvincible: function(player, enemy, enemyBig) {
     player.invincible = !player.invincible;
     if (player.invincible) {
       this.game.add.tween(player).to({tint: 0xff00ff,}, 2500, Phaser.Easing.Exponential.Out, true, 0, 0, true);
@@ -324,7 +324,7 @@ TurnUpTheVamp.Game.prototype = {
       this.gameMusic.resume();
     }
   },
-  enemyHit: function(player, enemy) {
+  enemyHit: function(player, enemy, enemyBig) {
     if (!player.invincible) {
 
       player.kill();
