@@ -64,6 +64,7 @@ ZenvaRunner.Game.prototype = {
     this.deathSound = this.game.add.audio('death');
     this.gameMusic = this.game.add.audio('gameMusic');
     this.gameMusic.play('', 0, true);
+    this.dubstepMusic = this.game.add.audio('dubstep');
 
     this.heartSpawnX = this.game.width + 64;
     this.powerupSpawnX = this.game.width + 64;
@@ -263,6 +264,12 @@ ZenvaRunner.Game.prototype = {
     if (player.invincible) {
       this.game.add.tween(player).to({tint: 0xff00ff,}, 2500, Phaser.Easing.Exponential.Out, true, 0, 0, true);
       game.time.events.add(5000, this.toggleInvincible, this, player);
+      this.gameMusic.pause();
+      this.dubstepMusic.play('', 5);
+    }
+    else {
+      this.dubstepMusic.stop();
+      this.gameMusic.resume();
     }
   },
   enemyHit: function(player, enemy) {

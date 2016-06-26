@@ -25,6 +25,7 @@ ZenvaRunner.Preload.prototype = {
 		this.load.audio('bounce', 'assets/audio/bounce.wav');
 		this.load.audio('heart', 'assets/audio/coin.wav');
 		this.load.audio('death', 'assets/audio/death.wav');
+		this.load.audio('dubstep', 'assets/audio/dubstep.mp3');
 
 		this.load.bitmapFont('minecraftia', 'assets/fonts/minecraftia/minecraftia.png', 'assets/fonts/minecraftia/minecraftia.xml');
 
