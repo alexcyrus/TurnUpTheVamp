@@ -6,13 +6,13 @@ TurnUpTheVamp.Game = function() {
   this.heartTimer = 0;
 
   this.heartBigRate = 9000;
-  this.heartBigTimer = 0;
+  this.heartBigTimer = 5000;
 
   this.powerupRate = 20000;
-  this.powerupTimer = 0;
+  this.powerupTimer = 15000;
 
   this.enemyRate = 800;
-  this.enemyTimer = 0;
+  this.enemyTimer = 2000;
 
   this.score = 0;
   this.previousHeartType = null;
@@ -132,9 +132,9 @@ TurnUpTheVamp.Game.prototype = {
     this.enemiesBig.destroy();
     this.score = 0;
     this.heartTimer = 0;
-    this.heartBigTimer = 0;
-    this.powerupTimer = 0;
-    this.enemyTimer = 0;
+    this.heartBigTimer = 5000;
+    this.powerupTimer = 15000;
+    this.enemyTimer = 2000;
   },
   createHeart: function() {
     var x = this.game.width;
@@ -277,11 +277,7 @@ TurnUpTheVamp.Game.prototype = {
     }, this);
   },
   heartBigHit: function(player, heartBig) {
-    this.score++;
-    this.score++;
-    this.score++;
-    this.score++;
-    this.score++;
+    this.score+=5;
     this.heartSound.play();
     heartBig.kill();
 
@@ -314,12 +310,13 @@ TurnUpTheVamp.Game.prototype = {
   toggleInvincible: function(player, enemy, enemyBig) {
     player.invincible = !player.invincible;
     if (player.invincible) {
-      this.game.add.tween(player).to({tint: 0xff00ff,}, 2500, Phaser.Easing.Exponential.Out, true, 0, 0, true);
+      this.game.add.tween(player).to({tint: 0xff0000,}, 100, Phaser.Easing.Linear.NONE, true);
       this.gameMusic.pause();
       this.dubstepMusic.play('', 4.75);
       game.time.events.add(5000, this.toggleInvincible, this, player);
     }
     else {
+      this.game.add.tween(player).to({tint: 0xffffff,}, 1000, Phaser.Easing.Linear.NONE, true);
       this.dubstepMusic.stop();
       this.gameMusic.resume();
     }
