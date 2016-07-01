@@ -11,8 +11,8 @@ TurnUpTheVamp.Game = function() {
   this.powerupRate = 20000;
   this.powerupTimer = 15000;
 
-  this.enemyRate = 800;
-  this.enemyTimer = 2000;
+  this.enemyRate = 2000;
+  this.enemyTimer = 0;
 
   this.score = 0;
   this.previousHeartType = null;
@@ -82,7 +82,7 @@ TurnUpTheVamp.Game.prototype = {
 },
   update: function() {
     if(this.spaceKey.isDown) {
-      this.player.body.velocity.y -= 27.5;
+      this.player.body.velocity.y -= 22;
     }
 
     if( this.player.body.velocity.y < 0 || this.spaceKey.isDown) {
